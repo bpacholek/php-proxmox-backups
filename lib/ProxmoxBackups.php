@@ -47,7 +47,7 @@ class ProxmoxBackups
     public function do()
     {
         foreach ($this->config['machines'] as $machine) {
-            $this->notify(self::NOTIF_START, $machine, 'Backup started for' . $machine['id'] . ' into storage `' . $machine['storage'] . '`.');
+            $this->notify(self::NOTIF_START, $machine, 'Backup started for ' . $machine['id'] . ' into storage `' . $machine['storage'] . '`.');
             $result = shell_exec(sprintf(self::BACKUP_COMMAND, $machine['id'], $machine['storage']));
             if ($result !== null && strpos($result, 'finished successfully')) {
                 //success
@@ -218,7 +218,9 @@ class ProxmoxBackups
             ftp_delete($connId, $ftpData['dir'] . $machine['id'] . '/' . $files[0]['name']);
         }
         foreach (scandir($machine['storage_path'], 1) as $srcFile) {
-            return ftp_put($connId, $ftpData['dir'] . $machine['id'] . '/' . $srcFile, $machine['storage_path'] . $srcFile, FTP_BINARY);
+            if (strstr('-' . $machine['id'] . '-', $srcFile)) {
+                return ftp_put($connId, $ftpData['dir'] . $machine['id'] . '/' . $srcFile, $machine['storage_path'] . $srcFile, FTP_BINARY);
+            }
         }
 
         return false;
