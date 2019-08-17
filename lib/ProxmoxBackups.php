@@ -77,7 +77,7 @@ class ProxmoxBackups
     protected function loadConfig($configFilePath)
     {
         $errors = [];
-        $configDecoded = json_decode(\file_get_contents($configFilePath));
+        $configDecoded = json_decode(\file_get_contents($configFilePath), true);
         if (!$configDecoded) {
             $errors[] = "Invalid JSON structure. Could not parse.";
 
