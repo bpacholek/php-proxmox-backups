@@ -157,7 +157,7 @@ class ProxmoxBackups
      * @todo switch to objects
      * @return array
      */
-    protected function ftp_get_filelist($con, $path)
+    protected function ftpGetFilelist($con, $path)
     {
         $files = [];
         $contents = ftp_rawlist($con, $path);
@@ -211,7 +211,7 @@ class ProxmoxBackups
         $ftpData = $this->config['global']['ftp'];
         $connId = ftp_connect($ftpData['host']);
         ftp_login($connId, $ftpData['login'], $ftpData['pass']);
-        $files = ftp_get_filelist($connId, $ftpData['dir'] . $machine['id']);
+        $files = $this->ftpGetFilelist($connId, $ftpData['dir'] . $machine['id']);
         usort($files, [$this, 'datesort']);
         //TODO remove all exceeding the backlog
         if (count($files) === $machine['ftp.backlog']) {
