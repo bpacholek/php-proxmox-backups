@@ -238,7 +238,7 @@ class ProxmoxBackups
             ftp_delete($connId, $ftpData['dir'] . $machine['id'] . '/' . $files[0]['name']);
         }
         foreach (scandir($machine['storage_path'], 1) as $srcFile) {
-            if (strstr('-' . $machine['id'] . '-', $srcFile)) {
+            if (strstr('-' . $machine['id'] . '-', $srcFile) && substr($srcFile, -4, 4) === '.lzo') {
                 return ftp_put($connId, $ftpData['dir'] . $machine['id'] . '/' . $srcFile, $machine['storage_path'] . $srcFile, FTP_BINARY);
             }
         }
