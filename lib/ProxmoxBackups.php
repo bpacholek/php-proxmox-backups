@@ -47,19 +47,19 @@ class ProxmoxBackups
     public function do()
     {
         foreach ($this->config['machines'] as $machine) {
-            $this->notif(self::NOTIF_START, $machine, 'Backup started for' . $machine['id'] . ' into storage `' . $machine['storage'] . '`.');
+            $this->notify(self::NOTIF_START, $machine, 'Backup started for' . $machine['id'] . ' into storage `' . $machine['storage'] . '`.');
             $result = shell_exec(sprintf(self::BACKUP_COMMAND, $machine['id'], $machine['storage']));
             if ($result !== null && strpos($result, 'finished successfully')) {
                 //success
-                $this->notif(self::NOTIF_STORING, $machine, $result);
+                $this->notify(self::NOTIF_STORING, $machine, $result);
                 if (isset($this->config['global']['ftp']) && isset($machine['ftp.backlog']) && ftpsave($machine) === false) {
-                    $this->notif(self::NOTIF_STORING_FAILED, $machine, $result);
+                    $this->notify(self::NOTIF_STORING_FAILED, $machine, $result);
                 } else {
-                    $this->notif(self::NOTIF_SUCCESS, $machine, $result);
+                    $this->notify(self::NOTIF_SUCCESS, $machine, $result);
                 }
             } else {
                 //fail
-                $this->notif(self::NOTIF_FAILURE, $machine, $result);
+                $this->notify(self::NOTIF_FAILURE, $machine, $result);
             }
         }
 
