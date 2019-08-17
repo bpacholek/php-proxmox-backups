@@ -234,12 +234,12 @@ class ProxmoxBackups
      */
     protected function notify($type, $machine, $contents)
     {
-        if (isset($machine['email'])) {
-            mailNotify($type, $machine, $contents);
+        if (isset($machine['email']) && isset($this->config['global']['smtp'])) {
+            $this->mailNotify($type, $machine, $contents);
         }
 
         if (isset($machine['telegram'])) {
-            telegramNotify($type, $machine, $contents);
+            $this->telegramNotify($type, $machine, $contents);
         }
 
         return $this;
