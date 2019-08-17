@@ -1,0 +1,43 @@
+{
+    "name": "idct/dynali-php",
+    "description": "Simple PHP executable tool for making backups with Proxmox 5 env easier.",
+    "type": "project",
+    "keywords": [
+        "php",
+        "sysops",
+        "devops",
+        "proxmox",
+        "ovh",
+        "backup",
+        "vm",
+        "virtualization",
+        "container",
+        "ct"
+    ],
+    "homepage": "https://idct.pl/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "IDCT Bartosz Pachołek",
+            "email": "bartosz@idct.pl",
+            "role": "lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/ideaconnect/php-proxmox-backups/issues"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.0",
+        "ext-json": "*",
+        "phpmailer/phpmailer": "^6.0"
+    },
+    "autoload": {
+        "classmap": [
+            "lib/"
+        ],
+        "psr-4": {
+            "IDCT\\ProxmoxBackups\\": "lib/"
+        }
+    }
+}
