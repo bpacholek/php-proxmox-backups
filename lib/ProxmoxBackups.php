@@ -198,6 +198,19 @@ class ProxmoxBackups
         return ($al['date'] > $bl['date']) ? +1 : -1;
     }
 
+    protected function getFtpFolders($con, $path)
+    {
+        $folders = [];
+        $files = $this->ftpGetFilelist($con, $path);
+        foreach ($files as $candidate) {
+            if ($candidate === 'folder') {
+                $folders[] = $candidate['name'];
+            }
+        }
+
+        return $folders;
+    }
+
     /**
      * Store file on the FTP server and remove last entry if backlog has been exceeded.
      *
@@ -211,6 +224,13 @@ class ProxmoxBackups
         $ftpData = $this->config['global']['ftp'];
         $connId = ftp_connect($ftpData['host']);
         ftp_login($connId, $ftpData['login'], $ftpData['pass']);
+
+        //get folders
+        $folders = $this->getFtpFolders($connId, $ftpData['dir']);
+        if (!in_array($machine['id'], $folders)) {
+            ftp_mkdir($connId, $ftpData['dir'] . $machine['id']);
+        }
+
         $files = $this->ftpGetFilelist($connId, $ftpData['dir'] . $machine['id']);
         usort($files, [$this, 'datesort']);
         //TODO remove all exceeding the backlog

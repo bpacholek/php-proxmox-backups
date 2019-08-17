@@ -21,6 +21,7 @@ TODOs
 - different rules for backlog: to keep weekly, monthly and not only daily entries
 - provide better readme
 - different FTPs for different machines
+- master logging
 
 Installation
 ============
