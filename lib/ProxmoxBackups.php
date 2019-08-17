@@ -113,7 +113,7 @@ class ProxmoxBackups
         $mail->Port       = $config['port'];
 
         //Recipients
-        $mail->setFrom($config['from_mail'], $config['fron_name']);
+        $mail->setFrom($config['from_mail'], $config['from_name']);
         $mail->addAddress($machine['email']);     // Add a recipient
 
         // Content

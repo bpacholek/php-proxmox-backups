@@ -1,5 +1,5 @@
 {
-    "name": "idct/dynali-php",
+    "name": "idct/php-proxmox-backups",
     "description": "Simple PHP executable tool for making backups with Proxmox 5 env easier.",
     "type": "project",
     "keywords": [
