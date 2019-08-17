@@ -52,7 +52,7 @@ class ProxmoxBackups
             if ($result !== null && strpos($result, 'finished successfully')) {
                 //success
                 $this->notify(self::NOTIF_STORING, $machine, $result);
-                if (isset($this->config['global']['ftp']) && isset($machine['ftp.backlog']) && ftpsave($machine) === false) {
+                if (isset($this->config['global']['ftp']) && isset($machine['ftp.backlog']) && $this->ftpsave($machine) === false) {
                     $this->notify(self::NOTIF_STORING_FAILED, $machine, $result);
                 } else {
                     $this->notify(self::NOTIF_SUCCESS, $machine, $result);
