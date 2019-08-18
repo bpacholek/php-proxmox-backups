@@ -126,7 +126,6 @@ Sample block:
             "id": 101,
             "storage": "backups",
             "email": "you@youremail.com",
-            "storage_path": "/var/lib/vz/backups/global/dump/",
             "ftp.backlog": 3,
             "telegram": {
                 "bot": "<telegram bot id>",
@@ -137,8 +136,6 @@ Sample block:
 
 * id -> identifier of the VM or CT from Proxmox
 * storage -> identifier of the storage from Proxmox to which the particular VM (or CT) can perform backups
-* storage_path -> path to the storage defined in the `storage` argument; *this will be removed in the future, have not
-found yet how to extract path by name*
 * email -> optional, if set then email notifications about the process will be sent (if SMTP is provided)
 * telegram -> optional, allows sending simple notifications using a Telegram Bot.
 

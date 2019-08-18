@@ -20,7 +20,6 @@
             "id": 103,
             "storage": "backups_1",
             "email": "johnny@yourserver.net",
-            "storage_path": "/var/lib/vz/backups/backups_1/dump/",
             "ftp.backlog": 3,
             "telegram": {
                 "bot": "999999999:AAAAAAAAAAAAAAAAAAAAAAAAAA",
@@ -31,7 +30,6 @@
             "id": 101,
             "storage": "backups_2",
             "email": "miranda@bestmail.com",
-            "storage_path": "/var/lib/vz/backups/backups_2/dump/",
             "ftp.backlog": 3
         }
     ]

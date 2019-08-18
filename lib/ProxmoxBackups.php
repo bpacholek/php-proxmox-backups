@@ -49,10 +49,11 @@ class ProxmoxBackups
         foreach ($this->config['machines'] as $machine) {
             $this->notify(self::NOTIF_START, $machine, 'Backup started for ' . $machine['id'] . ' into storage `' . $machine['storage'] . '`.');
             $result = shell_exec(sprintf(self::BACKUP_COMMAND, $machine['id'], $machine['storage']));
-            if ($result !== null && strpos($result, 'finished successfully')) {
+            if ($result !== null && strpos($result, 'finished successfully') && preg_match('/creating archive \'(.+?)\'/i', $result, $matches)) {
+                $filename = $matches[1];
                 //success
                 $this->notify(self::NOTIF_STORING, $machine, $result);
-                if (isset($this->config['global']['ftp']) && isset($machine['ftp.backlog']) && $this->ftpsave($machine) === false) {
+                if (isset($this->config['global']['ftp']) && isset($machine['ftp.backlog']) && $this->ftpsave($machine, $filename) === false) {
                     $this->notify(self::NOTIF_STORING_FAILED, $machine, $result);
                 } else {
                     $this->notify(self::NOTIF_SUCCESS, $machine, $result);
@@ -203,7 +204,7 @@ class ProxmoxBackups
         $folders = [];
         $files = $this->ftpGetFilelist($con, $path);
         foreach ($files as $candidate) {
-            if ($candidate === 'folder') {
+            if ($candidate['type'] === 'folder') {
                 $folders[] = $candidate['name'];
             }
         }
@@ -219,7 +220,7 @@ class ProxmoxBackups
      * @todo handle failed login.
      * @return boolean
      */
-    protected function ftpsave($machine)
+    protected function ftpsave($machine, $filename)
     {
         $ftpData = $this->config['global']['ftp'];
         $connId = ftp_connect($ftpData['host']);
@@ -237,13 +238,8 @@ class ProxmoxBackups
         if (count($files) === $machine['ftp.backlog']) {
             ftp_delete($connId, $ftpData['dir'] . $machine['id'] . '/' . $files[0]['name']);
         }
-        foreach (scandir($machine['storage_path'], 1) as $srcFile) {
-            if (strstr('-' . $machine['id'] . '-', $srcFile) && substr($srcFile, -4, 4) === '.lzo') {
-                return ftp_put($connId, $ftpData['dir'] . $machine['id'] . '/' . $srcFile, $machine['storage_path'] . $srcFile, FTP_BINARY);
-            }
-        }
 
-        return false;
+        return ftp_put($connId, $ftpData['dir'] . $machine['id'] . '/', $filename, FTP_BINARY);
     }
 
     /**
