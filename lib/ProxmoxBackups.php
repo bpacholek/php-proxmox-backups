@@ -239,7 +239,7 @@ class ProxmoxBackups
             ftp_delete($connId, $ftpData['dir'] . $machine['id'] . '/' . $files[0]['name']);
         }
 
-        return ftp_put($connId, $ftpData['dir'] . $machine['id'] . '/', $filename, FTP_BINARY);
+        return ftp_put($connId, $ftpData['dir'] . $machine['id'] . '/' . basename($filename), $filename, FTP_BINARY);
     }
 
     /**
